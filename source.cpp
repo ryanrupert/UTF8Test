@@ -1,21 +1,24 @@
-// crt_setmodeunicode.c  
-// This program uses _setmode to change  
-// stdout to Unicode. Cyrillic and Ideographic  
-// characters will appear on the console (if  
-// your console font supports those character sets).  
+#include <iostream>
+#include <cstdio>
+#include <sstream>
 
-//source: https://blogs.msmvps.com/gdicanio/2017/08/22/printing-utf-8-text-to-the-windows-console/
-  
-#include <fcntl.h>  
-#include <io.h>  
-#include <stdio.h>  
-  
-int main(void) {  
-    //_setmode(_fileno(stdout), _O_U16TEXT);  
-    //_O_U16TEXT would not work correct is below
-    //source: https://stackoverflow.com/questions/8871540/o-wtext-o-u16text-o-u8text-are-these-modes-possible-in-mingw-compiler-ar
-    _setmode(_fileno(stdout), 0x00020000);  
-    wprintf(L"\x043a\x043e\x0448\x043a\x0430 \x65e5\x672c\x56fd\n");  
-    getchar();
-    return 0;  
-}  
+#include <Windows.h>
+
+//source: https://stackoverflow.com/questions/45575863/how-to-print-utf-8-strings-to-stdcout-on-windows
+
+class MBuf: public std::stringbuf {
+public:
+    int sync() {
+        fputs( str().c_str(), stdout );
+        str( "" );
+        return 0;
+    }
+};
+
+int main() {
+    SetConsoleOutputCP( CP_UTF8 );
+    setvbuf( stdout, nullptr, _IONBF, 0 );
+    MBuf buf;
+    std::cout.rdbuf( &buf );
+    std::cout << u8"Greek: αβγδ\n" << std::flush;
+} 
