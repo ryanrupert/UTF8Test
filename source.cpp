@@ -1,6 +1,12 @@
 #include <string>
 #include <iostream>
 #include <Windows.h>
+#include <Wincon.h>
+#include <conio.h>
+#define _UNICODE
+
+#include <tchar.h>
+#include <wchar.h>
 
 //source: https://stackoverflow.com/a/45576563
 
