@@ -31,7 +31,9 @@ int main() {
 	std::wcin >> temp;
 	std::cin.get();
 	//output with out function call the user input
+	//this seems not to output
 	std::wcout << "this is the user input: " << std::endl << temp << std::endl;
+	//this is outputting
 	std::cout << "this is non wide cout of wide temp " << std::endl << temp << std::endl;
 	//call the functions to change encoding
 	int bufferSize = WideCharToMultiByte(CP_UTF8, 0, temp, -1, NULL, 0, NULL, NULL);
